@@ -1,0 +1,61 @@
+Crear la base de datos en postgres
+	CREATE DATABASE nombre;
+	\c nombre
+
+Crear el proyecto de django 
+	django-admin startproject nombre
+
+Crear una aplicación dentro del proyecto de django
+	python3 manage.py startapp nombre
+
+Irse al settings del proyecto, añadir app, añadir la base de datos de la siguiente manera 
+
+	DATABASES = {
+	    'default': {
+		'ENGINE': 'django.db.backends.postgresql',
+		'NAME': 'biblioteca',
+		'USER': 'postgres',      
+		'PASSWORD': 'Smx@2022',      
+		'HOST': 'localhost',          
+		'PORT': '5432',
+	    }
+	}
+
+Después crear las migraciones
+	python3 manage.py makemigrations
+
+Después migrar
+	python3 manage.py migrate
+
+Irse urls del proyecto, añadir esa importación
+	from django.urls import include, path
+
+y tambien añadir la url de la aplicación de esta manera
+	path('gestor/', include('biblioteca.urls')),
+
+Siguiente hacer el models de la aplicación 
+	from django.db import models
+	# Create your models here.
+
+	class Biblioteca(models.Model):
+	    titulo = models.CharField(max_length=255)
+	    num_paginas = models.CharField(max_length=255)
+
+	    def __str__(self):
+		return f"{self.titulo} - {self.num_paginas}"
+
+Despues a la aplicación crear el "urls.py" con la siguiente sintaxis 
+	from django.urls import path
+	from . import views
+
+	# Aquí le asigno una URL a mis funciones dentro del views (.views)
+	urlpatterns = [
+	    path('list-titulos/', views.list_titulos, name='list_titulos'),
+	    path('add-password/', views.add_password, name='add_password'),
+	    path('edit-password/', views.edit_password, name='edit_password'),
+	    path('delete-password/', views.delete_password, name='delete_password'),
+	]
+
+Para ver si funciona hacer el python3 manage.py runserver
+
+
